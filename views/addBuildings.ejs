@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('./header/header') %>
+</head>
+<body>
+    <%- include('./header/svg') %>
+    <%- include('./header/nav') %>
+    <section>
+        <form id="siteEkle" action="/admin/addBuildings" method="POST">
+            <label>Site Adı</label>
+            <input type="text" name="buildingsNames">
+            <label>Site Blok Sayısı</label>
+            <input type="text" name="buildingsBlok">
+            <label>Site Daire sayısı</label>
+            <input type="text" name="buildingsFlat">
+            <button type="submit" name="kaydet" class="savebutton">Kaydet</button>
+        </form>
+    </section>
+</body>
+</html>

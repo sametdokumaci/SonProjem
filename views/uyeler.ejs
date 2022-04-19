@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('./header/header') %>
+</head>
+
+<body>
+    <%- include('./header/svg') %>
+        <%- include('./header/nav') %>
+
+            <select class="selectbox" id="buildings">
+                <option name="Seçiniz" value="Seçiniz">Seçiniz</option>
+            </select>
+
+
+            <button id="gonder">Gönder</button>
+
+            <div class="container users">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">Daire</th>
+                            <th scope="col">Blog</th>
+                            <th scope="col">Ad Soyad</th>
+                            <th scope="col">Site</th>
+                            <th class="text-center" scope="col">İşlem</th>
+                        </tr>
+                    </thead>
+                    <tbody id="eklenecek">
+                        <!-- <% customerInfo.forEach(customer=>{ %>
+                            <tr>
+                                <td>
+                                    <%= customer.daire %>
+                                </td>
+                                <td>
+                                    <%= customer.blog %>
+                                </td>
+                                <td>
+                                    <%= customer.adSoyad %>
+                                </td>
+                                <td>
+                                    <%= customer.site %>
+                                </td>
+                                <td class="text-center">
+                                    <a class="del" data-doc="<%=customer._id %>">Sil</a> - Güncelle
+                                </td>
+                            </tr>
+                            <% }) %> -->
+                    </tbody>
+</body>
+<script>
+    var del;
+    var deneme;
+    var customerLength;
+    var sitelerLength;
+    var sitesi;
+    var siteler;
+
+    async function siteler() {
+        const result = await $.ajax({
+            url: '/admin/siteler',
+            type: 'POST',
+            dataType: "json",
+            success: function (response) {
+                console.log("Siteler Çekildi")
+                siteler = response
+            },
+            error: function (response) {
+                console.log("Hata")
+            }
+        })
+        return result;
+    }
+    async function kontrol(x) {
+        const result = await $.ajax({
+            url: '/admin',
+            type: 'POST',
+            dataType: "json",
+            success: function (response) {
+                console.log("Uyeler Getirildi")
+                deneme = response
+            },
+            error: function (response) {
+                console.log("Hata")
+            }
+        })
+        return result;
+    }
+    async function deleted(x) {
+        const result = await $.ajax({
+            url: '/admin/delete/' + x,
+            type: 'DELETE',
+            dataType: "json",
+            success: function (response) {
+                console.log("Başarıyla Silindi")
+                window.location.reload()
+            },
+            error: function (response) {
+                console.log("Hata")
+            }
+        })
+        return result;
+    }
+
+ 
+    async function siteleriyaz() {
+        sitelerLength = siteler.buildingsName['length'];
+
+        for (var i = 0; i <= sitelerLength; i++) {
+            $("#buildings").append('<option name="' + siteler.buildingsName[i].buildingsNames + '" value="' + siteler.buildingsName[i].buildingsNames + '">' + siteler.buildingsName[i].buildingsNames + '</option>')
+        }
+    }
+
+    $(document).ready(async function () {
+        await siteler()
+        await siteleriyaz()
+    })
+
+    $('tbody').on("click", ".deleteBtn", async function () {
+        del = $(this).data("doc");
+        await deleted(del)
+    })
+
+    $("#gonder").click(async function () {
+        deneme = $(this).data("doc");
+        await kontrol(deneme)
+
+        customerLength = deneme.customerInfo["length"]
+
+        if ($(".selectbox").val() == "Kardelen") {
+            $("#eklenecek").html("");
+            for (var i = 0; i <= customerLength; i++) {
+                sitesi = deneme.customerInfo[i].site;
+                if (sitesi == "Kardelen") {
+                    $("#eklenecek").append('<tr><td id="daire">' + deneme.customerInfo[i].daire + '</td><td id="blog">' + deneme.customerInfo[i].blog + '</td><td id="adsoyad">' + deneme.customerInfo[i].adSoyad + '</td><td id="site">' + deneme.customerInfo[i].site + '</td><td class="text-center" class="sil"><button class="deleteBtn" data-doc="' + deneme.customerInfo[i]._id + '">Sil</button> - Güncelle</td></tr>')
+                }
+                else {
+                    console.log("boş")
+                }
+            }
+        }
+        else if ($(".selectbox").val() == "Cumhuriyet") {
+            $("#eklenecek").html("");
+            for (var i = 0; i <= customerLength; i++) {
+                sitesi = deneme.customerInfo[i].site;
+                if (sitesi == "Cumhuriyet") {
+                    $("#eklenecek").append('<tr><td id="daire">' + deneme.customerInfo[i].daire + '</td><td id="blog">' + deneme.customerInfo[i].blog + '</td><td id="adsoyad">' + deneme.customerInfo[i].adSoyad + '</td><td id="site">' + deneme.customerInfo[i].site + '</td><td class="text-center"><button class="deleteBtn" data-doc="' + deneme.customerInfo[i]._id + '">Sil</button> - Güncelle</td></tr>')
+                }
+                else {
+                    console.log("boş")
+                }
+            }
+        }
+        else if ($(".selectbox").val() == "Prosas") {
+            $("#eklenecek").html("");
+            for (var i = 0; i <= customerLength; i++) {
+                sitesi = deneme.customerInfo[i].site;
+                if (sitesi == "Prosas") {
+                    $("#eklenecek").append('<tr><td id="daire">' + deneme.customerInfo[i].daire + '</td><td id="blog">' + deneme.customerInfo[i].blog + '</td><td id="adsoyad">' + deneme.customerInfo[i].adSoyad + '</td><td id="site">' + deneme.customerInfo[i].site + '</td><td class="text-center"><button class="deleteBtn" data-doc="' + deneme.customerInfo[i]._id + '">Sil</button> - Güncelle</td></tr>')
+                }
+                else {
+                    console.log("boş")
+                }
+            }
+        }
+        else if ($(".selectbox").val() == "Ayazma") {
+            $("#eklenecek").html("");
+            for (var i = 0; i <= customerLength; i++) {
+                sitesi = deneme.customerInfo[i].site;
+                if (sitesi == "Ayazma") {
+                    $("#eklenecek").append('<tr><td id="daire">' + deneme.customerInfo[i].daire + '</td><td id="blog">' + deneme.customerInfo[i].blog + '</td><td id="adsoyad">' + deneme.customerInfo[i].adSoyad + '</td><td id="site">' + deneme.customerInfo[i].site + '</td><td class="text-center"><button class="deleteBtn" data-doc="' + deneme.customerInfo[i]._id + '">Sil</button> - Güncelle</td></tr>')
+                }
+                else {
+                    console.log("boş")
+                }
+            }
+        }
+        else {
+            $("#eklenecek").html("");
+            $("#eklenecek").append('<div>Bir Site Seçiniz</div>')
+
+        }
+    })
+
+
+</script>
+
+</html>
