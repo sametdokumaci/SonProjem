@@ -11,14 +11,16 @@ const userRoutes = require('./routes/userRoutes')
 const { $where } = require('./models/customerInfo')
 
 
+
+
+const app = express()
+
 app.set('view engine', 'ejs')
 const port = process.env.PORT || 5000;
 const dbURL = 'mongodb+srv://sametdokumaci:5468615000s@deneme.llwy6.mongodb.net/deneme-blog?retryWrites=true&w=majority'
 mongoose.connect(dbURL, { useNewUrlParser: true, useUnifiedTopology: true })
     .then((result => app.listen(port)))
     .catch((err) => console.log(err))
-
-const app = express()
 
 app.set('view engine', 'ejs')
 app.use(express.static('images'))
